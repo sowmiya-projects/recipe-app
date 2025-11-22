@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recipe App</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+</head>
+<body class="bg-light">
+
+    <div class="container mt-4">
+
+        <h1 class="text-center mb-4">🍲 My Recipe App</h1>
+
+        <!-- Recipe Form -->
+        <div class="card shadow-sm p-4 mb-4">
+            <h3>Add a New Recipe</h3>
+
+            <form method="POST">
+                <label class="form-label">Recipe Name</label>
+                <input type="text" name="name" class="form-control" required>
+
+                <label class="form-label mt-3">Ingredients</label>
+                <textarea name="ingredients" class="form-control" rows="3" required></textarea>
+
+                <label class="form-label mt-3">Steps</label>
+                <textarea name="steps" class="form-control" rows="3" required></textarea>
+
+                <button type="submit" class="btn btn-primary mt-3">Add Recipe</button>
+            </form>
+        </div>
+
+        <!-- Recipe List -->
+        <h2>📖 Recipes</h2>
+
+        <div class="row">
+            {% for recipe in recipes %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.name }}</h5>
+                        <p><b>Ingredients:</b> {{ recipe.ingredients }}</p>
+                        <p><b>Steps:</b> {{ recipe.steps }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</body>
+</html>
