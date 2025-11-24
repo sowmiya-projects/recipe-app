@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="banner.png" width="100%" alt="Project Banner">
+  <img src="project-banner.png" width="100%" alt="Project Banner">
 </p>
+
 
 # 🍽️ Recipe App – DevOps CI/CD Project  
 *A complete end-to-end DevOps project integrating Docker, Kubernetes (Minikube), and Jenkins CI/CD.*
