@@ -29,6 +29,13 @@ This project demonstrates full DevOps lifecycle automation from code → build �
 
 ---
 
+## 📸 UI Screenshots
+
+<p align="center">
+  <img src="ui1.png" width="80%" />
+  <img src="ui2.png" width="80%" />
+</p>
+
 ## 📌 Features
 
 ✔ REST API + UI for recipe app  
