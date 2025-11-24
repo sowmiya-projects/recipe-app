@@ -3,11 +3,9 @@
 </p>
 
 # 🍽️ Recipe App – DevOps CI/CD Project  
-
-A complete end-to-end DevOps project integrating **Docker**, **Kubernetes (Minikube)**, and **Jenkins CI/CD** for automated deployments.
+*A complete end-to-end DevOps project integrating Docker, Kubernetes (Minikube), and Jenkins CI/CD.*
 
 ---
-
 ## 🚀 Badges
 
 <p align="center">
@@ -18,126 +16,154 @@ A complete end-to-end DevOps project integrating **Docker**, **Kubernetes (Minik
   <img src="https://img.shields.io/badge/Flask-Web%20App-green?logo=flask">
 </p>
 
----
-
-## 🌐 Live Demo (Optional)
-
-> Add your live Minikube URL or cloud deployment here.  
-*(If running locally, skip this section.)*
-
----
-
-## 🧱 Architecture Diagram
-
-+------------+ +-------------+ +------------------+
-| Developer | ---> | GitHub | -----> | Jenkins Pipeline |
-+------------+ +-------------+ +------------------+
-|
-v
-+----------------+
-| Docker Build |
-+----------------+
-|
-v
-+-------------------------+
-| Minikube Kubernetes |
-| Deployment (Pods/Svc) |
-+-------------------------+
-|
-v
-🍽️ User accesses Recipe App
-
-yaml
-Copy code
-
----
-
-## 📌 Project Overview
+## 🚀 Project Overview
 
 This is a simple Python/Flask Recipe Application deployed using:
 
-- **Docker** → Containerized application  
-- **Kubernetes (Minikube)** → Cluster deployment  
-- **Jenkins Pipeline** → CI/CD automation  
-- **GitHub** → Source Code Management  
+- **Docker** – Containerized application  
+- **Kubernetes (Minikube)** – Cluster deployment  
+- **Jenkins Pipeline** – CI/CD automation  
+- **GitHub** – Version Control  
+
+This project demonstrates full DevOps lifecycle automation from code → build → image → deploy → verify.
 
 ---
 
-## 📁 Project Structure
+## 📌 Features
 
+✔ REST API + UI for recipe app  
+✔ Docker containerization  
+✔ Kubernetes deployment with Deployment + Service  
+✔ Jenkins CI/CD (build, push to Minikube, deploy)  
+✔ Fully automated pipeline  
+
+---
+
+# 🛠️ Technologies Used
+- Python + Flask  
+- Docker  
+- Kubernetes (Minikube)  
+- Jenkins  
+- GitHub  
+- YAML (K8s manifests)
+
+---
+
+# 📁 Project Structure
+
+```
 recipe-app/
-│
-├── app.py
-├── Dockerfile
-├── deployment.yaml
-├── service.yaml
-├── project-banner.png
-├── templates/
-│ ├── index.html
-│ └── recipe.html
-└── instance/
-└── database files (if any)
-
-yaml
-Copy code
+│── app.py
+│── requirements.txt
+│── Dockerfile
+│── deployment.yaml
+│── service.yaml
+│── jenkins-deployment.yaml
+│── jenkins-service.yaml
+└── README.md
+```
 
 ---
 
-# 🛠️ Setup Instructions (Very Clear Step-by-Step)
+# ⚙️ Setup Instructions (Step-by-Step)
 
-## 1️⃣ Clone the Repository
+Follow these exact steps to set up and run the project.
 
-```sh
-git clone https://github.com/sowmiya-projects/recipe-app.git
+---
+
+## **1️⃣ Install Required Tools**
+
+### Install Docker  
+https://www.docker.com/products/docker-desktop/
+
+### Install Minikube  
+https://minikube.sigs.k8s.io/docs/start/
+
+### Install kubectl  
+```
+choco install kubernetes-cli
+```
+
+### Install Jenkins (Windows Installer)
+https://www.jenkins.io/download/
+
+✔ After installation, access Jenkins at:  
+👉 http://localhost:8080  
+✔ Enter admin password from:  
+```
+C:\Program Files\Jenkins\secrets\initialAdminPassword
+```
+
+---
+
+## **2️⃣ Clone the Repository**
+
+```
+git clone https://github.com/<your-username>/recipe-app.git
 cd recipe-app
-2️⃣ Build Docker Image
-sh
-Copy code
-docker build -t recipe-app-k8s .
-3️⃣ Start Minikube
-sh
-Copy code
-minikube start
-Use Minikube Docker environment:
+```
 
-sh
-Copy code
-minikube -p minikube docker-env
-4️⃣ Load Image into Minikube
-sh
-Copy code
+---
+
+## **3️⃣ Start Minikube**
+
+```
+minikube start
+```
+
+Check status:
+
+```
+minikube status
+```
+
+---
+
+## **4️⃣ Build Docker Image**
+
+```
+docker build -t recipe-app-k8s .
+```
+
+---
+
+## **5️⃣ Load Image into Minikube**
+
+```
 minikube image load recipe-app-k8s
-5️⃣ Deploy to Kubernetes
-sh
-Copy code
+```
+
+---
+
+## **6️⃣ Apply Kubernetes Files**
+
+```
 minikube kubectl -- apply -f deployment.yaml
 minikube kubectl -- apply -f service.yaml
+```
+
 Check pods:
 
-sh
-Copy code
+```
 minikube kubectl -- get pods
+```
+
 Expose service:
 
-sh
-Copy code
+```
 minikube service recipe-service
-⚙️ Jenkins CI/CD Pipeline
-This project uses an automated Jenkins pipeline for:
+```
 
-Pulling latest code from GitHub
+---
 
-Building Docker image
+# 🔧 Jenkins CI/CD Pipeline Setup
 
-Loading image into Minikube
+### **Create New Pipeline in Jenkins**  
+→ *New Item* → *Pipeline*
 
-Deploying updated version
+Paste the following script:
 
-Verifying pods
-
-Jenkinsfile Used
-groovy
-Copy code
+```groovy
 pipeline {
     agent any
 
@@ -149,42 +175,52 @@ pipeline {
             }
         }
 
-        stage('Use Minikube Docker') {
-            steps {
-                sh 'eval $(minikube -p minikube docker-env)'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t recipe-app-k8s:latest .'
+                bat 'docker build -t recipe-app-k8s:latest .'
             }
         }
 
         stage('Load Image to Minikube') {
             steps {
-                sh 'minikube image load recipe-app-k8s:latest'
+                bat 'minikube image load recipe-app-k8s:latest'
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'minikube kubectl -- apply -f deployment.yaml'
-                sh 'minikube kubectl -- apply -f service.yaml'
+                bat 'minikube kubectl -- apply -f deployment.yaml'
+                bat 'minikube kubectl -- apply -f service.yaml'
             }
         }
 
         stage('Verify Pods') {
             steps {
-                sh 'minikube kubectl -- get pods'
+                bat 'minikube kubectl -- get pods'
             }
         }
     }
 }
-📜 Deployment YAML Files
-deployment.yaml
-yaml
-Copy code
+```
+
+---
+
+# 📦 Dockerfile
+
+```dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "app.py"]
+```
+
+---
+
+# 📄 Kubernetes Deployment (deployment.yaml)
+
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -200,14 +236,18 @@ spec:
         app: recipe-app
     spec:
       containers:
-        - name: recipe-app
-          image: recipe-app-k8s:latest
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 5000
-service.yaml
-yaml
-Copy code
+      - name: recipe-container
+        image: recipe-app-k8s
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+```
+
+---
+
+# 📄 Kubernetes Service (service.yaml)
+
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -217,28 +257,80 @@ spec:
   selector:
     app: recipe-app
   ports:
-    - port: 5000
-      targetPort: 5000
-      nodePort: 30000
-🐳 Dockerfile
-dockerfile
-Copy code
-FROM python:3.10-slim
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30010
+```
 
-WORKDIR /app
-COPY . /app
+---
 
-RUN pip install -r requirements.txt
+# 📄 Jenkins Deployment (jenkins-deployment.yaml)
 
-EXPOSE 5000
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+        - name: jenkins-container
+          image: jenkins/jenkins:lts
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+            - containerPort: 50000
+```
 
-CMD ["python", "app.py"]
-🤝 Contributing
+---
+
+# 📄 Jenkins Service (jenkins-service.yaml)
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-service
+spec:
+  type: NodePort
+  selector:
+    app: jenkins
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080
+```
+
+---
+
+# 🎉 Result
+
+✔ Fully working DevOps pipeline  
+✔ Docker → Minikube → Kubernetes  
+✔ Automated Jenkins CI/CD  
+✔ Production-like deployment workflow  
+
+---
+
+# 📸 Project Banner
+
+![Project Banner](A_banner_for_a_software_development_project_displa.png)
+
+---
+
+# 🤝 Contributing
 Pull requests are welcome!
-If you want new features, feel free to open an issue.
 
-📄 License
+---
+
+# 📜 License
 This project is open-source and free to use.
 
-🎉 Thank You!
-If you like this project, please ⭐ star the repository!
