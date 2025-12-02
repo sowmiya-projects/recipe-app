@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recipe-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recipe-app
+  template:
+    metadata:
+      labels:
+        app: recipe-app
+    spec:
+      containers:
+        - name: recipe-container
+          image: recipe-app-k8s:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+
+
